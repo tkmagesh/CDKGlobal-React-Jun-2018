@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Intro</title>
+	<script src="react.development.js"></script>
+	<script src="react-dom.development.js"></script>
+	<script>
+		window.addEventListener('DOMContentLoaded', init);
+		function init(){
+			var btnRender = document.getElementById('btnRender');
+			btnRender.addEventListener('click', onBtnRenderClick);
+		}
+		function onBtnRenderClick(){
+			var h1 = React.createElement('h1', null, Date());
+			ReactDOM.render(h1, document.getElementById('root'));
+		}
+	</script>
+</head>
+<body>
+	<input type="button" value="Render" id="btnRender">
+	<div id="root"></div>
+</body>
+</html>

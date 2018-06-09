@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>React Intro</title>
+	<script src="react.development.js"></script>
+	<script src="react-dom.development.js"></script>
+	<script>
+		window.addEventListener('DOMContentLoaded', init);
+		function init(){
+			var btnRender = document.getElementById('btnRender');
+			btnRender.addEventListener('click', onBtnRenderClick);
+		}
+		function onBtnRenderClick(){
+			var app = React.createElement('div', null, 
+				React.createElement('h1', null, 'React.js Introduction'),
+				React.createElement('hr', null, null),
+				React.createElement('h3', null, 'Overview'),
+				React.createElement('p', null, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis temporibus, ipsum numquam reiciendis, veniam soluta architecto dicta magnam nostrum, expedita pariatur in. Totam ratione sunt mollitia voluptatem nesciunt qui necessitatibus?'),
+				React.createElement('p', null, 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis temporibus, ipsum numquam reiciendis, veniam soluta architecto dicta magnam nostrum, expedita pariatur in. Totam ratione sunt mollitia voluptatem nesciunt qui necessitatibus?'),
+				React.createElement('h3', null, 'Advantages'),
+				React.createElement('ol', null, 
+					React.createElement('li', null, 'Efficient'),
+					React.createElement('li', null, 'Simplicity'),
+					React.createElement('li', null, 'Ease of use')
+				)
+			)
+			ReactDOM.render(app, document.getElementById('root'));
+		}
+	</script>
+</head>
+<body>
+	<input type="button" value="Render" id="btnRender">
+	<div id="root"></div>
+</body>
+</html>
