@@ -84,8 +84,9 @@
 		}
 
 		{/* Components */}
-		class BugItem extends React.Component{
+		class BugItem extends React.PureComponent{
 			render(){
+				console.log('BugItem - render'); 
 				let { bug, toggle} = this.props;
 				let bugStyle = bug.isClosed ? 'bugname closed' : 'bugname'
 				return(
