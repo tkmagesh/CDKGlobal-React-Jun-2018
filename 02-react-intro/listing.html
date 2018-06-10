@@ -7,21 +7,53 @@
 	<script src="react-dom.development.js"></script>
 	<script src="babel.min.js"></script>
 	<script type="text/babel">
-		class Products extends React.Component{
+
+		class EventEmitter{
+			_listeners = [];
+			subscribe(listenerFn){
+				if (typeof listenerFn === 'function')
+					this._listeners.push(listenerFn);
+			}
+			triggerChange(){
+				this._listeners.forEach(listenerFn => listenerFn());
+			}
+		}
+		class ProductsModel extends EventEmitter{
+			_items = [];
+			addNew(productName){
+				this._items.push(productName);
+				this.triggerChange();
+			}
+			getAll(){
+				return [...this._items];
+			}
+		}
+		class ProductsCount extends React.Component{
 			render(){
-				let items = ['Pen', 'Pencil', 'Marker'];
-				let productItems = [];
-				for(let index =0, count=items.length; index < count; index++){
-					let productItem = (<li key={index}>{items[index]}</li>);
-					productItems.push(productItem);
-				}
-				/* replace line 13 to 17 using the array.map method*/
+				return(<h3>{this.props.data}</h3>);
+			}
+		}
+
+		class Products extends React.Component{
+			
+			state = { newProductName : ''};
+
+			constructor(props){
+				super(props);
+				this.onAddNewClick = this.onAddNewClick.bind(this);
+			}
+			
+			onAddNewClick(){
+				this.props.model.addNew(this.state.newProductName);
+			}
+			render(){
+				let items = this.props.model.getAll();
+				let productItems = items.map((product, index) => (<li key={index}>{product}</li>));
 				return(
 					<div>
-						<h1>Products</h1>
 						<label>Product Name :</label>
-						<input type="text" />
-						<input type="button" value="Add New"/>
+						<input type="text" onChange={evt => this.setState({newProductName : evt.target.value})} />
+						<input type="button" value="Add New" onClick={this.onAddNewClick}/>
 						<hr/>
 						<ol>
 							{productItems}
@@ -30,13 +62,30 @@
 				)
 			}
 		}
-		
-		ReactDOM.render(<Products />, 
-			document.getElementById('root'));
+
+		class ProductsApp extends React.Component{
+			render(){
+				let items = this.props.model.getAll();
+				return(
+					<div>
+						<ProductsCount data={items.length}/>
+						<Products model={this.props.model}/>
+					</div>
+				)
+			}
+		}
+			
+		var model = new ProductsModel();
+		function renderApp(){
+			ReactDOM.render(<ProductsApp model={model}/>, 
+				document.getElementById('root'));
+		}
+		model.subscribe(renderApp);
+		renderApp();
 	</script>
 </head>
 <body>
-	
+	<h1>Products</h1>
 	<div id="root"></div>
 </body>
 </html>
