@@ -3,6 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Products</title>
+	<style>
+		body{
+			margin-left: 50px;
+		}
+
+		ol{
+			width: 500px;
+			list-style: none;
+			-webkit-padding-start : 0px;
+		}
+		li{
+			margin-bottom: 10px;
+			border : 1px solid gray;
+			padding: 10px;
+			border-radius: 5px;
+			background-color: #e7e7e7;
+		}
+		.discontinued{
+			color : red;
+			text-decoration: line-through;
+			font-style: italic;
+			font-weight: bold;
+		}
+		.productname{
+			font-size: 20pt;
+		}
+	</style>
 	<script src="react.development.js"></script>
 	<script src="react-dom.development.js"></script>
 	<script src="babel.min.js"></script>
@@ -21,7 +48,11 @@
 		class ProductsModel extends EventEmitter{
 			_items = [];
 			addNew(productName){
-				this._items.push(productName);
+				let newProduct = {
+					name : productName,
+					isDiscontinued : false
+				}
+				this._items.push(newProduct);
 				this.triggerChange();
 			}
 			getAll(){
@@ -30,7 +61,14 @@
 		}
 		class ProductsCount extends React.Component{
 			render(){
-				return(<h3>{this.props.data}</h3>);
+				let discontinuedCount = this.props.data.reduce((prevResult, product) => product.isDiscontinued ? ++prevResult : prevResult, 0);
+				return(
+					<div>
+						<span className="discontinued">{discontinuedCount}</span>
+						<span> / </span>
+						<span>{this.props.data.length}</span>
+					</div>
+				);
 			}
 		}
 
@@ -48,7 +86,13 @@
 			}
 			render(){
 				let items = this.props.model.getAll();
-				let productItems = items.map((product, index) => (<li key={index}>{product}</li>));
+				let productItems = items.map((product, index) => (
+					<li key={index}>
+						<div>{product.name}</div>
+						<div>[{product.isDiscontinued.toString()}]</div>
+						<input type="button" value="Discontinue" />
+					</li>
+				));
 				return(
 					<div>
 						<label>Product Name :</label>
@@ -68,7 +112,7 @@
 				let items = this.props.model.getAll();
 				return(
 					<div>
-						<ProductsCount data={items.length}/>
+						<ProductsCount data={items}/>
 						<Products model={this.props.model}/>
 					</div>
 				)
