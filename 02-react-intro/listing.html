@@ -45,20 +45,33 @@
 				this._listeners.forEach(listenerFn => listenerFn());
 			}
 		}
-		class ProductsModel extends EventEmitter{
+
+		class ProductModel{
+			name = '';
+			isDiscontinued = false;
+
+			constructor(name){
+				this.name = name;
+			}
+			discontinue(){
+				this.isDiscontinued = true;
+			}
+		}
+		class ProductsCollectionModel extends EventEmitter{
 			_items = [];
 			addNew(productName){
-				let newProduct = {
-					name : productName,
-					isDiscontinued : false
-				}
+				let newProduct = new ProductModel(productName);
 				this._items.push(newProduct);
 				this.triggerChange();
+			}
+			discontinue(product){
+				product.isDiscontinued = true;
 			}
 			getAll(){
 				return [...this._items];
 			}
 		}
+
 		class ProductsCount extends React.Component{
 			render(){
 				let discontinuedCount = this.props.data.reduce((prevResult, product) => product.isDiscontinued ? ++prevResult : prevResult, 0);
@@ -69,6 +82,27 @@
 						<span>{this.props.data.length}</span>
 					</div>
 				);
+			}
+		}
+
+		class ProductItem extends React.Component{
+			constructor(props){
+				super(props);
+				this.onDiscontinueClick = this.onDiscontinueClick.bind(this);
+			}
+			onDiscontinueClick(){
+				console.log('product being discontinued', this.props.product);
+				this.props.product.discontinue();
+			}
+			render(){
+				let {product} = this.props;
+				return(
+					<li>
+						<div>{product.name}</div>
+						<div>[{product.isDiscontinued.toString()}]</div>
+						<input type="button" value="Discontinue" onClick={this.onDiscontinueClick}/>
+					</li>
+				)
 			}
 		}
 
@@ -84,14 +118,11 @@
 			onAddNewClick(){
 				this.props.model.addNew(this.state.newProductName);
 			}
+			
 			render(){
 				let items = this.props.model.getAll();
 				let productItems = items.map((product, index) => (
-					<li key={index}>
-						<div>{product.name}</div>
-						<div>[{product.isDiscontinued.toString()}]</div>
-						<input type="button" value="Discontinue" />
-					</li>
+					<ProductItem product={product} key={index} />
 				));
 				return(
 					<div>
@@ -119,7 +150,7 @@
 			}
 		}
 			
-		var model = new ProductsModel();
+		var model = new ProductsCollectionModel();
 		function renderApp(){
 			ReactDOM.render(<ProductsApp model={model}/>, 
 				document.getElementById('root'));
