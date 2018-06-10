@@ -40,24 +40,24 @@ let ConnectedError = connect(
 )(ErrorDisplay);
 
 /*
-<Router>
-			<div>
-				<Link to="/">Bug Tracker</Link>
-				<br/>
-				<Link to="/spinner">Spinner</Link>
-				<br />
-			  <Route exact path="/" component={BugTracker} />
-		      <Route path="/bugs" component={BugTracker} />
-		      <Route path="/spinner" component={Spinner} />
-		     </div>
-	    </Router>
+
 */
 
 ReactDOM.render(
 	<Provider store={appStore}>
-		<Spinner />
-		<hr/>
-		<BugTracker />
+		<Router>
+			<div>
+				<p>
+				<Link to="/">Bug Tracker</Link>
+				<br/>
+				<Link to="/spinner">Spinner</Link>
+				<br />
+				</p>
+			  <Route exact path="/" component={BugTracker} />
+		      <Route path="/bugs" component={BugTracker} />
+		      <Route path="/spinner" component={Spinner} />
+		    </div> 
+	    </Router>
 	</Provider>
 	, document.getElementById('root')
 );

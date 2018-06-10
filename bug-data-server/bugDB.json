@@ -1,0 +1,32 @@
+{
+  "bugs": [
+    {
+      "id": 6,
+      "name": "Data integrity checks failed",
+      "isClosed": false,
+      "createdAt": "2018-05-24T10:57:55.421Z"
+    },
+    {
+      "id": 7,
+      "name": "Server communication failure",
+      "isClosed": false,
+      "createdAt": "2018-05-30T10:32:18.568Z"
+    },
+    {
+      "id": 8,
+      "name": "User action not recognized",
+      "isClosed": false,
+      "createdAt": "2018-06-10T11:19:31.985Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "P102",
+      "name": "Bug Tracker"
+    },
+    {
+      "id": "P101",
+      "name": "Payroll Management"
+    }
+  ]
+}
